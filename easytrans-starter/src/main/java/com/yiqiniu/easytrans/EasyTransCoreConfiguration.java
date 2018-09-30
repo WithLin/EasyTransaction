@@ -34,6 +34,7 @@ import com.yiqiniu.easytrans.executor.AfterTransMethodExecutor;
 import com.yiqiniu.easytrans.executor.BestEffortMessageMethodExecutor;
 import com.yiqiniu.easytrans.executor.CompensableMethodExecutor;
 import com.yiqiniu.easytrans.executor.ReliableMessageMethodExecutor;
+import com.yiqiniu.easytrans.executor.SagaTccMethodExecutor;
 import com.yiqiniu.easytrans.executor.TccMethodExecutor;
 import com.yiqiniu.easytrans.filter.DefaultEasyTransFilterFactory;
 import com.yiqiniu.easytrans.filter.EasyTransFilter;
@@ -76,7 +77,7 @@ import com.yiqiniu.easytrans.serialization.impl.SpringObjectSerialization;
 import com.yiqiniu.easytrans.stringcodec.StringCodec;
 import com.yiqiniu.easytrans.stringcodec.impl.EnableStringCodecZookeeperImpl;
 import com.yiqiniu.easytrans.util.ByteFormIdCodec;
-import com.yiqiniu.easytrans.util.CallWrappUtil;
+import com.yiqiniu.easytrans.util.CallWrapUtil;
 import com.yiqiniu.easytrans.util.DeafultByteFormIdCodec;
 
 /**
@@ -202,6 +203,12 @@ public class EasyTransCoreConfiguration {
 	public TccMethodExecutor tccMethodExecutor(@Lazy EasyTransSynchronizer transSynchronizer,
 			RemoteServiceCaller rpcClient) {
 		return new TccMethodExecutor(transSynchronizer, rpcClient);
+	}
+	
+	@Bean
+	public SagaTccMethodExecutor sagaTccMethodExecutor(@Lazy EasyTransSynchronizer transSynchronizer,
+			RemoteServiceCaller rpcClient) {
+		return new SagaTccMethodExecutor(transSynchronizer, rpcClient);
 	}
 
 	@Bean
@@ -352,8 +359,8 @@ public class EasyTransCoreConfiguration {
 	}
 	
 	@Bean
-	public CallWrappUtil callWrappUtil(EasyTransFacade facade) {
-		return new CallWrappUtil(facade);
+	public CallWrapUtil callWrappUtil(EasyTransFacade facade) {
+		return new CallWrapUtil(facade);
 	}
 	
 }
